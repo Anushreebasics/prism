@@ -531,34 +531,5 @@ Please refer to the [`evaluation`](./evaluation) folder for detailed usage and s
 ---
 
 
-## ☕️ Citation
-
-If you find this work useful, please consider citing our paper:
-
-```python
-@article{wang2025prism,
-  title={Prism: Can Small Language Models Teach Large Language Models Reasoning?},
-  author={Wang, Jingyuan and Chen, Yankai and Li, Zhonghang and Huang, Chao},
-  journal={arXiv preprint arXiv:2510.07962},
-  year={2025}
-}
-```
-
-Thank you for your interest in our work!
 
 
----
-
-
-## 📜 License
-
-This project is released under the [MIT License](./LICENSE).
-
-
-<br>
-
-
-<p align="center">
-  <em> ❤️ Thanks for visiting ✨ Prism ✨</em><br><br>
-  <img src="https://visitor-badge.laobi.icu/badge?page_id=HKUDS.Prism&style=for-the-badge&color=00d4ff" alt="Views">
-</p>
