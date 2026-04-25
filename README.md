@@ -13,12 +13,7 @@ Can <strong><em>SMALL</em></strong> Language Models Teach <strong><em>LARGE</em>
   <strong>Teaching large language models to reason — using smaller ones.</strong>
 </p>
 
-<p align="center">
-  <a href="https://arxiv.org/abs/2510.07962"><img src="https://img.shields.io/badge/Paper-arXiv-b31b1b?style=flat-square" /></a>
-  <a href="https://huggingface.co/collections/bearthecoder/prism-models-68edbf175755ca5a8c699f9c"><img src="https://img.shields.io/badge/🤗-Prism_Models-ffcc4d?style=flat-square" /></a>
-  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white" />
-  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-22c55e?style=flat-square" /></a>
-</p>
+
 
 <br/>
 
