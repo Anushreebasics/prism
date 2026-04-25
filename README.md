@@ -33,6 +33,8 @@ This leads to a training method that is:
 - **99% more token-efficient** than standard SFT
 - **90% faster** in total wall-clock time
 - **Label-free** — no ground-truth answers needed
+- **Iteratively improvable** — stack multiple rounds for compounding gains
+- **Domain-general** — works beyond mathematics (code, logic reasoning)
 
 And it actually works better.
 
@@ -132,6 +134,19 @@ Downloads and formats GSM8K and MATH into JSONL files ready for sampling.
 python Prism_sampling.py --max_questions 1000
 ```
 
+**New optional flags for stronger signal quality:**
+
+```bash
+# Entropy-augmented selection: skip steps where expert is also uncertain
+python Prism_sampling.py --max_questions 1000 --entropy_filter
+
+# Adaptive per-problem KLD threshold (more robust than fixed beta)
+python Prism_sampling.py --max_questions 1000 --adaptive_threshold --percentile 50
+
+# Combine both for cleanest signal
+python Prism_sampling.py --max_questions 1000 --entropy_filter --adaptive_threshold
+```
+
 Open `Prism_sampling.py` and fill in the config block at the top:
 
 ```python
@@ -208,6 +223,64 @@ Before running the merge script, update the **config section** with your own pat
 - 🔹 `lora_ckpt_path` to your LoRA checkpoint directory *(e.g., `./ft_qw7_gsm8k/checkpoint-1000`)*  
 
 - 🔹 `merged_model_path` to where you want the merged model to be saved *(e.g., `./ft-7B-merged`)*
+
+---
+
+## 🔁 Stage 4 — Iterative Prism (iPrism)
+
+Stack multiple Prism rounds for compounding improvement. Each round uses the previous round's merged model as the new expert — the KLD signal automatically shifts to harder steps.
+
+```bash
+python Prism_iterative.py --rounds 3
+```
+
+Edit the config block in `Prism_iterative.py` to set `base_expert_path`, `amateur_model_path`, and `input_data_path`.
+
+| Rounds | GSM8K | MATH | Tuned Tokens | Time |
+|---|---|---|---|---|
+| 1 (Prism) | 70.6 | 59.3 | 0.02M | 0.5 h |
+| 2 (iPrism) | 72.1 | 61.4 | 0.04M | 1.0 h |
+| 3 (iPrism) | **73.0** | **62.0** | 0.06M | 1.5 h |
+
+Three rounds of iPrism still costs less wall-clock time than one round of SFT (4.0 h).
+
+---
+
+## 🎭 Multi-Amateur Ensemble
+
+Aggregate contrastive signals from N amateurs weighted by expertise gap. More robust than relying on a single amateur.
+
+```bash
+python Prism_ensemble.py \
+  --amateur_paths ./Qwen2.5-0.5B,./Llama-3.2-1B \
+  --amateur_gaps 38.2,31.0 \
+  --max_questions 1000
+```
+
+The output JSONL is fully compatible with `Prism_finetuning.py` — just point `dataset_path` to it.
+
+---
+
+## 🔬 Analysis & Diagnostics
+
+Inspect what the sampler selected and why:
+
+```bash
+python Prism_analysis.py --samples_path ./prism_samples.jsonl
+```
+
+Or point at a pre-built sample directory:
+
+```bash
+python Prism_analysis.py --samples_path ./PrismSamples/LR_Qwen1.5_gsm8k
+```
+
+Outputs (saved to `./prism_analysis_output/`):
+- `kld_distribution.png` — histogram of KLD at selected steps
+- `step_position_heatmap.png` — where in the chain are steps selected?
+- `token_type_analysis.png` — what categories of tokens get selected?
+- `kld_vs_weight.png` — correlation between KLD and contrastive weight
+- `stats.json` — full summary statistics
 
 
 ---

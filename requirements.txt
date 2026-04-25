@@ -4,4 +4,6 @@ datasets>=2.20.0
 huggingface_hub>=0.24.0
 tqdm>=4.66.0
 peft>=0.12.0
+numpy>=1.24.0
+matplotlib>=3.7.0   # required for Prism_analysis.py plots
 

@@ -14,6 +14,14 @@ torch.set_float32_matmul_precision('high')  # Unlock fast TF32 matmuls on H100
 # === Command-line arguments ===
 parser = argparse.ArgumentParser()
 parser.add_argument("--max_questions", type=int, default=None, help="Maximum number of prompts to process")
+parser.add_argument("--entropy_filter", action="store_true",
+                    help="Enable entropy-augmented step selection: skip steps where expert entropy >= gamma")
+parser.add_argument("--gamma", type=float, default=None,
+                    help="Expert entropy ceiling (default: adaptive 60th percentile per batch)")
+parser.add_argument("--adaptive_threshold", action="store_true",
+                    help="Use per-problem adaptive KLD threshold (percentile of KLD distribution) instead of fixed beta")
+parser.add_argument("--percentile", type=float, default=50.0,
+                    help="Percentile of per-problem KLD distribution to use as threshold when --adaptive_threshold is set (default: 50)")
 args = parser.parse_args()
 
 # === Config ===
@@ -146,6 +154,37 @@ for prompt_obj in tqdm(prompts, desc="Processing prompts"):
                 probs = F.softmax(next_token_logits, dim=-1)
                 amateur_probs_all.append(probs)
 
+    # === Adaptive threshold: compute per-problem beta from KLD percentile ===
+    effective_beta = beta
+    if args.adaptive_threshold:
+        all_klds_this_prompt = []
+        for step in range(1, len(expert_targets)):
+            ep = expert_probs[step]
+            ap = amateur_probs_all[step - 1]
+            min_v = min(ep.size(0), ap.size(0))
+            eps_ = 1e-12
+            kld_ = F.kl_div((ap[:min_v] + eps_).log(), ep[:min_v] + eps_, reduction='sum').item()
+            all_klds_this_prompt.append(kld_)
+        if all_klds_this_prompt:
+            import numpy as np
+            effective_beta = float(np.percentile(all_klds_this_prompt, args.percentile))
+
+    # === Entropy ceiling: adaptive gamma if not provided ===
+    effective_gamma = None
+    if args.entropy_filter:
+        if args.gamma is not None:
+            effective_gamma = args.gamma
+        else:
+            # Set gamma to 60th percentile of expert entropy across steps of this prompt
+            entropies = []
+            for step in range(1, len(expert_targets)):
+                ep = expert_probs[step] + 1e-12
+                h  = -(ep * ep.log()).sum().item()
+                entropies.append(h)
+            if entropies:
+                import numpy as np
+                effective_gamma = float(np.percentile(entropies, 60))
+
     samples_this_prompt = 0
     for step in range(1, len(expert_targets)):
         expert_dist = expert_probs[step]
@@ -160,14 +199,6 @@ for prompt_obj in tqdm(prompts, desc="Processing prompts"):
         if not mask.any():
             continue
 
-        # P_E_V = expert_dist[mask]
-        # P_A_V = amateur_dist[mask]
-
-        # P_E_V /= P_E_V.sum()
-        # P_A_V /= P_A_V.sum()
-
-        # kl_div = F.kl_div(P_A_V.log(), P_E_V, reduction='sum').item()
-
         # Full-vocab KL divergence
         epsilon = 1e-12
         P_E = expert_dist + epsilon
@@ -175,8 +206,14 @@ for prompt_obj in tqdm(prompts, desc="Processing prompts"):
 
         kl_div = F.kl_div(P_A.log(), P_E, reduction='sum').item()
 
-        if kl_div < beta:
+        if kl_div < effective_beta:
             continue
+
+        # === Entropy filter: skip steps where expert is uncertain ===
+        if args.entropy_filter and effective_gamma is not None:
+            expert_entropy = -(P_E * P_E.log()).sum().item()
+            if expert_entropy >= effective_gamma:
+                continue
 
         log_PE = torch.log(expert_dist + 1e-12)
         log_PA = torch.log(amateur_dist + 1e-12)
