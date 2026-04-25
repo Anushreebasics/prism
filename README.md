@@ -10,315 +10,196 @@ Can <strong><em>SMALL</em></strong> Language Models Teach <strong><em>LARGE</em>
 
 
 <p align="center">
-  <img src="./assets/welcome.png" width="500" alt="Welcome banner"/>
+  <strong>Teaching large language models to reason — using smaller ones.</strong>
 </p>
-
-
-<!-- Quick links -->
-<div align="center">
-
-[![arXiv](https://img.shields.io/badge/arXiv-2510.07962-b31b1b.svg)](https://arxiv.org/abs/2510.07962)
-[![🤗 Paper](https://img.shields.io/badge/🤗_Paper-Prism-ffcc4d.svg)](https://huggingface.co/papers/2510.07962)
-[![License](https://img.shields.io/badge/Code%20License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Baselines](https://img.shields.io/badge/Baselines-Qwen2.5--Math-blue.svg)](https://github.com/QwenLM/Qwen2.5-Math)
-![](https://img.shields.io/badge/Python-3.10+-yellow.svg)
-[![🤗 Models](https://img.shields.io/badge/🤗_Models-Prism_Models-ffcc4d.svg)](https://huggingface.co/collections/bearthecoder/prism-models-68edbf175755ca5a8c699f9c)
-<br>
-
-<a href="https://github.com/HKUDS/Prism/stargazers"><img src="https://img.shields.io/github/stars/HKUDS/Prism?color=00d9ff&style=for-the-badge&logo=github&logoColor=white&labelColor=1a1a2e&label=Stars" alt="GitHub stars">
-</a>
-
-
-<p>
-	<a href="README.md"><img src="https://img.shields.io/badge/🇺🇸English-1a1a2e?style=for-the-badge"></a>
-  <a href="README-zh.md"><img src="https://img.shields.io/badge/🇨🇳中文版-1a1a2e?style=for-the-badge"></a>
-</p>
-
-
-<a href="./Communication.md"><img src="https://img.shields.io/badge/💬Feishu-Group-07c160?style=for-the-badge&logoColor=white&labelColor=1a1a2e"></a>
-<a href="./Communication.md"><img src="https://img.shields.io/badge/WeChat-Group-07c160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=1a1a2e"></a>
-
-</div>
-
-
----
-
 
 <p align="center">
-  <img src="./assets/prism_bars.png" width="800" />
-  <br>
-  <em><strong>Figure 1: Prism delivers superior performance with remarkable token efficiency</strong> - achieving consistent improvements in zero-shot pass@1 accuracy while dramatically reducing computational overhead by 90% in total time, 80% in sampled problems, and 99% in tuned tokens compared to traditional SFT.</em>
+  <a href="https://arxiv.org/abs/2510.07962"><img src="https://img.shields.io/badge/Paper-arXiv-b31b1b?style=flat-square" /></a>
+  <a href="https://huggingface.co/collections/bearthecoder/prism-models-68edbf175755ca5a8c699f9c"><img src="https://img.shields.io/badge/🤗-Prism_Models-ffcc4d?style=flat-square" /></a>
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white" />
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/License-MIT-22c55e?style=flat-square" /></a>
 </p>
 
-
-
-**💡 Key Insight:**  
-
-This efficiency breakthrough shows that **strategic token selection**, rather than exhaustive training, most effectively unlocks the latent potential of LLM reasoning — proving that *smarter, not blindly harder* is the path to scalable AI improvement.
-
-
----
-
-
-## 🎉 News
-- [x] [2025/10/14] 🚀 New Release: [`PrismSamples`](./PrismSamples) — **Pre-collected Prism training samples** ready for immediate fine-tuning. This dataset enables direct model training without requiring the full sampling pipeline, streamlining reproduction efforts and accelerating downstream research workflows.
-- [x] [2025/10/14] 🚀 New Release: **Prism Enhanced Models** now available on 🤗 [Hugging Face Hub](https://huggingface.co/collections/bearthecoder/prism-models-68edbf175755ca5a8c699f9c). Ready-to-use models fine-tuned with our efficient reasoning enhancement approach for immediate deployment and experimentation.
-- [x] [2025/10/12] 🚀 New Release: Core implementation with Qwen2.5-Math and DeepSeek-R1 models.
-
-
----
-
-
-## ⚡ TL;DR
-
-**✨ Prism ✨** flips the script on AI training — small language models (SLMs) don’t just *learn* from large ones (LLMs); they can actually *teach* LLMs better and faster!
-
-
-**🔥 The Challenge:** 
-
-Supervised Fine-Tuning (SFT) struggles with three core bottlenecks:
-
-- **📊 Data-Intensive:** Relies on human-labeled or rejection-sampled datasets.
-
-- **⚖️ Uniform Learning:** Trains all tokens equally, even though only a small portion truly matter.  
-
-- **🔗 Ground-Truth Dependency:** Hinders adaptability to new domains and reasoning formats.  
-
-
-**🔍 Key Insight:**  
-
-We allocate 90% of compute to what models already know, while *under-investing* in the critical 10% that truly drives breakthroughs.
-
-
-## 📈 Prism: *Better and Faster*
-
-**Tested across 7 benchmarks × 5 models**
-
-🚀 **Performance Gains**  
-
-Prism consistently boosts reasoning accuracy across multiple datasets:
-
-- 📈 **Qwen2.5-Math-1.5B:** +28.1% on GSM8K, +25.1% on MATH, +7.2% on SVAMP, +11.7% on ASDIV 
-
-- 📈 **DeepSeek-R1-Distill-Qwen-1.5B:** +4.3% on GSM8K, +6.0% on MATH, +17.4% on OlympiadBench  
-
-- 📈 **Qwen2.5-Math-7B:** +10.4% on GSM8K, +6.0% on MATH, +9.3% on SVAMP, +7.9% on ASDIV  
-
-- 📈 **Qwen2.5-Math-1.5B-Instruct:** +1.9% on GSM8K, +2.6% on Minerva Math
-
-- 🌍 **Strong generalization:** Trained *only* on GSM8K, yet improves across **7 benchmarks**
-
-
-⚡ **Efficiency Breakthrough**  
-
-Taking `Qwen2.5-Math-1.5B` as an example, Prism achieves dramatic efficiency gains compared with SFT:
-
-- ⏱️ **90% less total time:** 4 hours → 0.5 hours 
-
-- 🧾 **80% fewer sampled problems:** 3,952 → 1,000 problems  
-
-- 🔢 **99% fewer tuned tokens:** 1.77M → 20K tokens  
-
-
-🌟 **Key Features**
-
-- 🎯 **SLM–LLM Teaching:** 
-  
-  Counterintuitively uses smaller *“amateur”* models to identify **critical reasoning moments** where stronger *“expert”* models should focus their learning.  
-
-- ⚡ **Extreme Token Efficiency:** 
-  
-  Achieves **99% fewer tuned tokens** than SFT by selectively optimizing **high-impact reasoning steps** instead of training uniformly on full trajectories.  
-
-- 🔄 **Three-Stage Lightweight Framework:**  
-
-  (1) **Critical step selection** via Expert-Amaeteur KLD detection
-
-  (2) **Contrastive supervision** capturing expert-amateur behavioral differentials
-
-  (3) **Self-distillation** for internalizing expert strengths  
-
-- 📈 **KL-Guided Learning:** 
-  
-  Leverages **behavioral divergence** between expert and amateur predictions to **pinpoint reasoning bottlenecks** — *all without requiring ground-truth labels.*  
-
-- 🧠 **Expertise Over Scale:** 
-  
-  Demonstrates that **domain expertise gaps**, rather than model size, drive effective contrast — even same-sized models with different knowledge can generate **powerful teaching signals.**
-
-
----
-
-
-## 🧩 Prism Framework
+<br/>
 
 <p align="center">
-  <img src="./assets/prism_new.png" width="800" />
-  <br>
-  <em>
-    <strong>Figure 2: Overview of the Prism framework.</strong> (1) Sampling Stage: Expert and Amateur models generate distributions π<sub>E</sub> and π<sub>A</sub>. Informative step selection retains steps with D<sub>KL</sub>(π<sub>E</sub> ∥ π<sub>A</sub>) > β, and contrastive supervision constructs soft labels v<sub>C</sub> capturing the Expert's advantage through Expert–Amateur contrast. (2) Fine-tuning Stage: The Expert model is enhanced by minimizing the KL divergence between its output and v<sub>C</sub>.
-  </em>
+  <img src="./assets/prism_bars.png" width="720" alt="Prism results overview" />
 </p>
-
 
 ---
 
+Most LLM fine-tuning methods treat all tokens the same. Prism doesn't.
 
-## 🚀 Quick Start
+The insight behind Prism is simple: during reasoning, not every step is equally hard. A model stumbles at specific moments — and those moments are where learning should be concentrated. Everything else is noise that wastes compute.
 
-*Prism* is incredibly *easy* to use. We’ve designed it to be accessible — so anyone can try it out and experience its *“counterintuitive effectiveness”* firsthand.
-No sweat — you’ll have it set up and running with your model of choice in just a few 🪄 simple steps below!
+To find those moments, Prism uses a small "amateur" model as a reference. Wherever the large "expert" model and the small amateur model strongly disagree on what token comes next, something interesting is happening. The expert knows something the amateur doesn't — and that gap is exactly where fine-tuning should focus.
 
+This leads to a training method that is:
+- **99% more token-efficient** than standard SFT
+- **90% faster** in total wall-clock time
+- **Label-free** — no ground-truth answers needed
 
-### 📦 Get Ready
+And it actually works better.
+
+---
+
+## How It Works
+
+Prism runs in three stages:
+
+**1 — Sample**  
+Both the expert and amateur model generate responses to a set of math problems. At each step of the expert's reasoning chain, Prism computes the KL divergence between the two models' next-token distributions. Steps with high divergence are flagged as *informative* — these are the moments the expert genuinely knows something the amateur doesn't.
+
+**2 — Build Supervision Signal**  
+At each informative step, Prism constructs a soft training target by contrasting the expert and amateur log-probabilities over plausible tokens. This contrastive distribution captures the expert's advantage in a differentiable form — without requiring the correct answer.
+
+**3 — Fine-tune with LoRA**  
+The expert model is fine-tuned using these soft labels via KL divergence loss. Because training only targets a small number of high-signal token positions, the total number of fine-tuning tokens is drastically reduced compared to full-trajectory SFT.
+
+<p align="center">
+  <img src="./assets/prism_new.png" width="720" alt="Prism framework diagram" />
+</p>
+
+---
+
+## Performance
+
+Trained only on GSM8K, Prism generalizes across 7 math benchmarks.
+
+| Model | GSM8K | MATH | SVAMP | ASDiv | MMLU STEM | Avg |
+|---|---|---|---|---|---|---|
+| Qwen2.5-Math-1.5B (base) | 42.5 | 34.2 | 68.8 | 68.1 | 49.8 | 52.7 |
+| + SFT | 69.2 | 57.1 | 64.1 | 70.2 | 47.7 | 61.7 |
+| **+ Prism** | **70.6** | **59.3** | **76.0** | **79.8** | **54.9** | **68.1** |
+| Qwen2.5-Math-7B (base) | 57.5 | 51.8 | 67.9 | 72.7 | 69.8 | 63.9 |
+| + SFT | 64.4 | **63.3** | 76.2 | 76.6 | 68.5 | 69.8 |
+| **+ Prism** | **67.9** | 57.8 | **77.2** | **80.6** | **70.5** | **70.8** |
+| DeepSeek-R1-Distill-1.5B (base) | 75.2 | 54.2 | 79.9 | 84.9 | 22.3 | 63.3 |
+| + SFT | 78.2 | **60.3** | 81.5 | 87.4 | 26.2 | 66.7 |
+| **+ Prism** | **79.5** | 60.2 | **83.5** | **87.5** | **26.2** | **67.4** |
+
+---
+
+## Efficiency
+
+| Model | Method | Time | Questions | Tokens | Gain |
+|---|---|---|---|---|---|
+| Qwen2.5-Math-1.5B | SFT | 4.0 h | 3,952 | 1.77M | +7.7% |
+| | **Prism** | **0.5 h** | **1,000** | **0.02M** | **+11.8%** |
+| Qwen2.5-Math-7B | SFT | 9.5 h | 6,029 | 2.20M | +4.5% |
+| | **Prism** | **0.75 h** | **1,000** | **0.02M** | **+4.7%** |
+| DeepSeek-R1-Distill-1.5B | SFT | 3.6 h | 6,023 | 5.95M | +3.0% |
+| | **Prism** | **0.5 h** | **1,000** | **0.02M** | **+5.6%** |
+
+<p align="center">
+  <img src="./assets/radar_1.5B.png" width="190" />
+  <img src="./assets/radar_7B.png" width="190" />
+  <img src="./assets/radar_ds1.5B.png" width="190" />
+  <img src="./assets/radar_1.5Bins.png" width="187" />
+</p>
+
+---
+
+## Quickstart
+
+### Install
+
 ```bash
 git clone https://github.com/HKUDS/Prism.git
 cd Prism
-```
-
-1️⃣ Install all dependencies:
-
-```bash
 pip install -r requirements.txt
 ```
 
-2️⃣ Download the Expert and Amateur models of your choice. For example:
+### Download Models
 
-🦉 Expert Model
+You need two models: an expert (domain-strong) and an amateur (general-purpose).
+
 ```bash
 huggingface-cli download Qwen/Qwen2.5-Math-1.5B --local-dir ./Qwen2.5-Math-1.5B
+huggingface-cli download Qwen/Qwen2.5-0.5B      --local-dir ./Qwen2.5-0.5B
 ```
 
-🐣 Amateur Model
-```bash
-huggingface-cli download Qwen/Qwen2.5-0.5B --local-dir ./Qwen2.5-0.5B
-```
+The expert should clearly outperform the amateur on your target domain. The amateur just needs to be coherent enough to produce meaningful contrast — not accurate. In practice, `Qwen2.5-0.5B` pairs well with the 1.5B and 7B math experts.
 
-
-3️⃣ Prepare the training data:
+### Prepare Data
 
 ```bash
 python data_prep.py
 ```
 
-
-#### ⚠️ Caveat
-
-Prism relies on **Expert–Amateur model pairing** to generate supervision signals. Thus, the choice of this pair is crucial to the method’s success.  
-
-⚖️ **Rule of Thumb**: 
-
-The Expert should **significantly outperform** the Amateur, while the Amateur must remain **competent enough** to produce coherent reasoning. In practice, performance peaks at a balanced *“sweet spot”* rather than simply widening the capability gap.   
-
-In our experiments, the Experts include *Qwen2.5-Math-1.5B*, *7B*, their *Instruct* counterparts, and *DeepSeek-R1-Distill* variants. The Amateur is fixed as *Qwen2.5-0.5B*, which offers strong contrast while maintaining sufficient reasoning ability to yield meaningful signals.  
-
-You’re *encouraged* to explore other model families (e.g., *Llama*), but keep this **balance principle** in mind when setting up your Expert–Amateur collaboration.
-
-
-#### 📋 Note
-
-- We use GSM8K *by default* for its emphasis on step-by-step, broadly applicable logical reasoning rather than domain-specific notation. This ensures that the Amateur, despite lacking math-specific training, can still produce interpretable outputs suitable for contrastive supervision.
-
-- You’re *absolutely* free to try other datasets — Prism is fully adaptable. However, depending on your dataset, you may need to adjust hyperparameters and the choice of Amateur model to ensure stable training and meaningful contrasts.
-
-  - For instance, if you experiment with the **MATH** dataset — a collection of high-school competition problems that are significantly harder than GSM8K — it’s recommended to upgrade the Amateur model from a generic **Qwen2.5** base model to the specialized **Qwen2.5-Math** variant. The base models were not math-pretrained and may struggle to produce coherent outputs on MATH, potentially destabilizing the expert–amateur contrast.
-
-  - The *balance principle* still applies here — the Amateur should be *adequately weaker* than the Expert to produce a clear contrast, yet capable enough to maintain coherent reasoning.
-
+Downloads and formats GSM8K and MATH into JSONL files ready for sampling.
 
 ---
 
-
-### 🎯 Sampling
-
-This step builds the **Prism supervision dataset** for downstream fine-tuning. Steps with high Expert-Amateur KLD are retained. These selected steps are transformed into supervision examples that encode the Expert’s strengths through *distributional contrast*. For full details, please see [our paper](https://arxiv.org/abs/2510.07962).
-
+## Stage 1 — Sampling
 
 ```bash
 python Prism_sampling.py --max_questions 1000
 ```
 
+Open `Prism_sampling.py` and fill in the config block at the top:
 
-#### 📋 Note
+```python
+expert_model_path  = "./Qwen2.5-Math-1.5B"
+amateur_model_path = "./Qwen2.5-0.5B"
+device             = "cuda"
+torch_dtype        = torch.bfloat16
+input_path         = "./gsm8k_train.jsonl"
+output_path        = "./prism_samples.jsonl"
+checkpoint_path    = "./prism_checkpoint.jsonl"
+alpha              = 0.2   # plausibility filter
+beta               = 0.4   # KLD selection threshold
+batch_size         = 64
+```
 
-Before running the script, you should:
+The script saves a JSONL file where each line is one training instance: a reasoning prefix, the candidate token IDs, and their contrastive weights.
 
-- Update the **config section** with your own relative paths. 
+### Skip Sampling — Use Pre-built Samples
 
-- Adjust the maximum number of problems to control the size of your supervision dataset, tweak the sampling parameters to explore more optimal combinations, and tune the batch size based on your available compute resources.
+If you don't have the GPU budget for sampling, pre-collected datasets are in [`PrismSamples/`](./PrismSamples):
 
-  - To give you a rough picture, in practice, we find that sampling **1,000 problems** from the GSM8K training set (with the filtering threshold **β = 0.4**) yields approximately **20,000 Prism contrastive samples**, which is already sufficient for **LoRA fine-tuning to converge** on the baseline models we tested.
+| File | For |
+|---|---|
+| `LR_Qwen1.5_gsm8k` | Qwen2.5-Math-1.5B |
+| `LR_Qwen7_gsm8k` | Qwen2.5-Math-7B |
+| `LR_ds1.5_gsm8k` | DeepSeek-R1-Distill-Qwen-1.5B |
 
-
-#### ⚡ **Shortcut**
-
-To save you the trouble of running the sampling pipeline — which, even though much *lighter and easier* with Prism, can still be daunting for those without ample compute power — we now provide *ready-to-go* Prism samples that let you **jump straight to the fine-tuning stage**! 🚀  
-
-You can find the following pre-collected **Prism sampling datasets** in the zip file under [`PrismSamples`](./PrismSamples):
-
-- **`LR_Qwen7_gsm8k`** — for **Qwen2.5-Math-7B**
-
-- **`LR_ds1.5_gsm8k`** — for **DeepSeek-R1-Distill-Qwen-1.5B**
-
-- **`LR_Qwen1.5_gsm8k`** — for **Qwen2.5-Math-1.5B** 
-
-  - We provide **two versions**, one sampled with **Torch 3.1** and another with **Torch 3.8**, as we found that the sampling results (i.e., the model’s generated outputs) can slightly vary across Torch versions.  
-
-  - The performance fluctuation is minimal — typically within **2–3%**, with later Torch versions usually performing slightly better.
-
-These datasets make it **much easier to reproduce** our results directly — no additional sampling required! ✨
-
+Unzip and point `dataset_path` in the fine-tuning script to the extracted JSONL.
 
 ---
 
+## Stage 2 — Fine-tuning
 
-### ⚙️ Fine-tuning
-
-This step launches the full Prism fine-tuning pipeline — combining *dataset loading*, *LoRA configuration*, and *contrastive KLD training* into a unified workflow.
-
-
-#### 💻 Run Options
-
-**Foreground (simple run):**
 ```bash
 python Prism_finetuning.py
 ```
 
-**Background (recommended for long training):**
+For long runs:
+
 ```bash
 nohup python Prism_finetuning.py > finetune.log 2>&1 &
-```
-
-**Monitor progress:**
-```bash
 tail -f finetune.log
 ```
 
+Config block in `Prism_finetuning.py`:
 
-#### ⚠️ Caveat
+```python
+model_path    = "./Qwen2.5-Math-1.5B"       # must match sampling expert
+dataset_path  = "./prism_samples.jsonl"
+output_dir    = "./prism-ft-1.5B"
+torch_dtype   = torch.bfloat16               # bfloat16 for H100, float16 for A100
+batch_size    = 8
+max_steps     = 1000
+lr            = 5e-5
+```
 
-*The expert model used for fine-tuning must be identical to the one used during sampling — this alignment is essential for correct behavior.*
-
-
-#### 📋 Note
-
-Before running the script, edit the **config section** to match your setup:
-
-- 🔹 Replace `<path_to_expert_model>` with your base model path *(e.g., `"./Qwen2.5-Math-7B"` or a local folder).*  
-
-- 🔹 Replace `<path_to_training_dataset>` with your dataset JSONL file.  
-
-- 🔹 Replace `<output_directory>` with the directory where checkpoints and the final model will be saved.  
-
-- 🔹 Set `torch_dtype` according to your hardware *(e.g., `torch.bfloat16` for **H100**, `torch.float16` for **A100**).*
-
+The trainer applies LoRA (`r=8`) to `q_proj` and `v_proj`, then optimizes KL divergence against the contrastive soft labels — no cross-entropy, no full trajectories.
 
 ---
 
+## Stage 3 — Merge & Deploy
 
-### 🔗 Model Merging
-
-Use this step to **merge the full model** (base + LoRA) locally, so it behaves as a **standalone model** without any LoRA dependency.
+Fuse the LoRA adapter into the base weights for a standalone model:
 
 ```bash
 python merge.py
